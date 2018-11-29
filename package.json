@@ -1,0 +1,19 @@
+{
+  "name": "smiles-checkout-ura",
+  "version": "1.0.0",
+  "description": "Front Checkout URA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Checkout-URA",
+    "Mock"
+  ],
+  "author": "Jonathas Ruiz dos Santos",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.2"
+  }
+}
