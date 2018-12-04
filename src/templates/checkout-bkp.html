@@ -60,6 +60,21 @@
                                   Verifica se a tela de checkout sera para booking emissao ou cancelamento emissao
                                 -->
                               </div>
+                              <script type="text/javascript">
+                                $(".flight-segment__details-toggler").on(
+                                  "click",
+                                  function(event) {
+                                    var $flightLegs = $(
+                                      event.currentTarget
+                                    ).siblings(".flight-segment__legs");
+                                    if (!$flightLegs.is(":visible")) {
+                                      $flightLegs.css("display", "flex");
+                                    } else {
+                                      $flightLegs.toggle();
+                                    }
+                                  }
+                                );
+                              </script>
                               <!-- END TICKET SUMMARY -->
                               <!-- BEGIN SEATS -->
                               <div class="seats-details"></div>
