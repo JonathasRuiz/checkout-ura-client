@@ -1,2 +1,24 @@
 body {
-  background: lightgreen; }
+  background: #fff !important; }
+
+.checkout .services-table .total td:not(:first-child) {
+  color: #7c7c7c;
+  font-family: "NunitoBold","Arial Bold",sans-serif; }
+
+.smiles-table {
+  font-family: Arial,sans-serif;
+  color: #7c7c7c; }
+
+.smls-drop-list {
+  font-family: Arial,sans-serif;
+  color: #7c7c7c; }
+
+.mobile-center-parcel {
+  font-family: Arial,sans-serif;
+  color: #7c7c7c; }
+
+ul {
+  list-style: none; }
+
+a:hover, a:visited, a:link, a:active {
+  text-decoration: none; }

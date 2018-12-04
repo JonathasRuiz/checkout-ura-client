@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var templateNames = [
-        "cart-itens", "checkout", "total"
+        "cartitens", "checkout", "total"
     ];
 
     var loadedTemplates = 0;
