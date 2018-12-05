@@ -1,65 +1,71 @@
-module.exports.SmilesServer = () => {
+var $ = require("jquery");
 
-	var host = "http://localhost.smiles.com.br:8888";
-	var timeoutTime = 30000;
-	var checkoutToken = "";
+module.exports = class SmilesServer {
 
-	var getHeaders = () => {
+  constructor() {
+    this.host = "http://localhost.smiles.com.br:8888";
+    this.timeoutTime = 30000;
+    this.checkoutToken = "";
+  }
+
+	getHeaders () {
 		return {
-			"Authorization": "Bearer " + checkoutToken,
+			"Authorization": "Bearer " + this.checkoutToken,
 			"Channel": "APP",
 			"Content-Type": "application/json"
-		}
+		};
+	}
+
+	get(url) {
+//		console.info("server-get: " + url);
+		var defer = new Promise( (resolve, reject) => {
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        headers: this.getHeaders(),
+        timeout: this.timeoutTime,
+        success: (data) => resolve(data),
+        error: (data) => reject(data)
+      });
+    });
+		return defer;
+	};
+	post (url, data) {
+//		console.info("server-post: " + url, data);
+    var defer = new Promise( (resolve, reject) => {
+  		$.ajax({
+  			url: url,
+  			type: "POST",
+  			data: data,
+  			dataType: "json",
+  			headers: this.getHeaders(),
+  			timeout: this.timeoutTime,
+        success: (data) => resolve(data),
+        error: (data) => reject(data)
+      });
+		});
+		return defer;
 	};
 
-	var get = (url) => {
-		console.info("server-get: " + url);
-		var defer = $.Deferred();
-		$.ajax({
-			url: url,
-			type: "GET",
-			dataType: "json",
-			headers: getHeaders(),
-			timeout: timoutTime
-		})
-		.done((data) => defer.resolve(data))
-		.fail((data) => defer.reject(data));
-		return defer.promise();
+	getTokenInfo() {
+		let url = this.host + "/api/oauth/tokeninfo";
+		let defer = new Promise((resolve, reject) => {
+      this.get(url)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => reject(err));
+    });
+		return defer;
 	};
-	var post = (url, data) => {
-		console.info("server-post: " + url, data);
-		var defer = $.Deferred();
-		$.ajax({
-			url: url,
-			type: "POST",
-			data: data,
-			dataType: "json",
-			headers: getHeaders(),
-			timeout: timoutTime
-		})
-		.done((data) => defer.resolve(data))
-		.fail((data) => defer.reject(data));
-		return defer.promise();
-	};
-
-	var getTokenInfo = () => {
-		let url = host + "/api/oauth/tokeninfo";
-		let defer = $.Deferred();
-		get(url)
-			.then((data) => {
-				console.info(data);
-			})
-			.catch((err) => defer.reject(err));
-		return defer.promise();
-	};
-
-	var testSmile = () => {
-		console.info("test-smile");
-	};
-
-	return {
-		getTokenInfo: getTokenInfo,
-		test: testSmile
-	};
+  getCheckout() {
+    let url = this.host + "/api/checkout";
+    return this.get(url);
+  };
+  getUserInfo() {
+    let url = this.host + "/api/user";
+    return this.get(url);
+  };
 
 };

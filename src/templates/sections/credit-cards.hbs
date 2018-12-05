@@ -1,0 +1,47 @@
+<div id="member-card-list" class="box-payment card-list-box">
+  <p class="box-title">Cartão de Crédito</p>
+  <div class="row-fluid">
+    <ul>
+      {{#each cards}}
+        <li>
+          <div class="card-id">
+            <input type="radio" name="member-card" value="{{this.last4}}" data-index="{{this.id}}" data-brand="{{this.brand}}" id="member-card-{{this.id}}" />
+            <label for="member-card-{{this.id}}" class="label-member-card" >
+              <span class="cards {{this.brand}} left-small"></span>
+              <span>**** {{this.last4}}</span>
+            </label>
+          </div>
+          <div class="div-secure-code-member-card" style="display:none;" id="div-secure-code-member-card-{{this.id}}">
+            <div>
+              <p>
+                <b>Código de Segurança</b>
+              </p>
+              <p>
+                Número de 3 digitos no verso do cartão ou 4 na frente do cartão
+              </p>
+            </div>
+            <div>
+              <input
+                type="tel"
+                placeholder=""
+                id="secure-code-member-card-{{this.id}}"
+                onkeypress="return numberOnly(event);"
+                onkeyup="numberOnlyMobile(this);"
+                pattern="[0-9]+$"
+                class="number numbersOnly cardCvc cardCvcSaved"
+                maxlength="4"
+              />
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <a href="javascript:;" id="other-credit-card">
+        + usar outro cartão de crédito
+      </a>
+    </div>
+  </div>
+</div>

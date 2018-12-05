@@ -1,25 +1,17 @@
 var $ = require("jquery");
-var Handlebars = require("./libs/handlebars-v4.0.12");
-var nonLoggedCheckout = require("./controllers/non-logged-checkout");
+
+var HandlebarLoader = require("./services/handlebar-loader");
+var AddCreditCard = require("./controllers/add-credit-card");
+var CreditCardList = require("./controllers/credit-card-list");
 
 $(document).ready(() => {
-  var templateNames = ["cartitens", "checkout", "total"];
-  var loadedTemplates = 0;
 
-  templateNames.forEach((templateName) => {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-      if (xhttp.readyState == 4 && xhttp.status == 200) {
-        Handlebars.partials[templateName] = Handlebars.compile(xhttp.responseText);
-        loadedTemplates++;
-        if (loadedTemplates == templateNames.length) {
-          $('#checkout-token-portlet').html(Handlebars.partials["checkout"]);
-          nonLoggedCheckout.init();
-        }
-      }
-    };
-    xhttp.open("GET","../src/templates/" + templateName + ".hbs",true);
-    xhttp.send();
+  let loader = new HandlebarLoader();
+  loader.loadTemplate("checkout")
+    .into("#checkout-token-portlet")
+    .then(() => {
+//      new CreditCardList().load();
+      new AddCreditCard().load();
+    });
 
-  });
 });
