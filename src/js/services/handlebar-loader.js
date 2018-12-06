@@ -28,7 +28,6 @@ module.exports = class HandlebarLoader {
   constructor() {
     this.templateLocal = "../src/templates/";
     this.templateName;
-    this.hbTemplate = {};
   }
 
   getTemplateFile(name) {

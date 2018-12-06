@@ -10,18 +10,9 @@
       name="number-card"
       maxlength="16"
       id="cardNumber"
-      onclick="removeMaskCardNumber(this);"
-      onblur="maskCardNumber(this);"
-      onkeypress="return numberOnly(event);"
-      onkeyup="numberOnlyMobile(this);"
-      required=""
-    />
+      required="" />
     <label>Número do cartão</label>
-    <span
-      id="smls-card-icon"
-      class="cards default"
-      title="Número do Cartão"
-    ></span>
+    <span id="smls-card-icon" class="cards default" title="Número do Cartão"></span>
   </div>
   <div class="span12 input__animate">
     <input
@@ -29,8 +20,7 @@
       name="name"
       id="cardHolderName"
       maxlength="25"
-      required=""
-    />
+      required="" />
     <label>Nome Impresso no Cartão</label>
   </div>
   <div class="row-fluid card-expiring">
@@ -39,13 +29,11 @@
     </div>
     <div
       class="span4 select"
-      id="cardDataMonthDiv"
-    >
+      id="cardDataMonthDiv" >
       <select
         class="payment"
         name="expirationMonth"
-        id="cardDataMonth"
-      >
+        id="cardDataMonth" >
         <option value="-1"> MÊS </option>
         <option value="01">01</option>
         <option value="02">02</option>
@@ -63,13 +51,11 @@
     </div>
     <div
       class="span4 select"
-      id="cardDataYearDiv"
-    >
+      id="cardDataYearDiv" >
       <select
         class="payment"
         name="expirationYear"
-        id="cardDataYear"
-      >
+        id="cardDataYear" >
         <option value="-1"> ANO </option>
         <option value="2018">2018</option>
         <option value="2019">2019</option>
@@ -107,16 +93,14 @@
         pattern="[0-9]+$"
         id="cardCvc"
         class="number numbersOnly cardCvc"
-        maxlength="4"
-      />
+        maxlength="4" />
     </div>
     <div class="span12" id="saveCardOption">
       <input
         type="checkbox"
         name="_smilesgetcheckoutportlet_WAR_smilescheckoutportlet_saveCard"
         id="saveCard"
-        checked=""
-      />
+        checked="" />
       <label for="saveCard">
         Compre com um clique. <br />
         Salvar cartão para futuras compras

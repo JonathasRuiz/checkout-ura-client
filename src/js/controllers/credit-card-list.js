@@ -3,11 +3,14 @@ var $ = require("jquery");
 var SmilesServer = require("../services/smiles-server");
 var HandlebarLoader = require("../services/handlebar-loader");
 
-var AddCreditCard = require("./add-credit-card");
+var CreditCardListInstance = null;
 
 module.exports = class CreditCardList {
   constructor() {
+    if(CreditCardListInstance) return CreditCardListInstance;
     this.creditCardList = [];
+    this.hb = null;
+    CreditCardListInstance = this;
   };
 
   load() {
@@ -35,9 +38,11 @@ module.exports = class CreditCardList {
   };
 
   loadTemplate() {
-    new HandlebarLoader()
-      .loadTemplate("sections/credit-cards", { cards: this.creditCardList })
-      .into("#checkout-step-1")
+    if(this.hb == null) {
+      this.hb = new HandlebarLoader()
+        .loadTemplate("sections/credit-cards", { cards: this.creditCardList });
+    }
+    this.hb.into("#checkout-step-1")
       .then(() => this.loadJQuery());
   };
 
@@ -56,7 +61,8 @@ module.exports = class CreditCardList {
     });
 
     $("#other-credit-card").on('click', () => {
-      new AddCreditCard().load();
+      var AddCreditCard = require("./add-credit-card");
+      new AddCreditCard().load()
     });
   };
 

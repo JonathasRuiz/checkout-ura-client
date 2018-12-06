@@ -1,17 +1,25 @@
 var $ = require("jquery");
+var CreditCardType = require('credit-card-type');
 
-var SmilesServer = require("../services/smiles-server");
+var FormService = require("../services/form-service.js");
 var HandlebarLoader = require("../services/handlebar-loader");
+var SmilesServer = require("../services/smiles-server");
 
-var CreditCardList = require("./credit-card-list");
+var AddCreditCardInstance = null;
 
-module.exports = class AddCreditCard{
-  constructor() {};
+module.exports = class AddCreditCard {
+  constructor() {
+    if(AddCreditCardInstance) return AddCreditCardInstance;
+    this.hb = null;
+    AddCreditCardInstance = this;
+  };
 
   load(){
-    new HandlebarLoader()
-      .loadTemplate("sections/add-credit-card", {})
-      .into("#checkout-step-1")
+    if(this.hb == null) {
+      this.hb = new HandlebarLoader()
+        .loadTemplate("sections/add-credit-card", {});
+    }
+    this.hb.into("#checkout-step-1")
       .then(() => this.loadJQuery());
   };
 
@@ -25,11 +33,34 @@ module.exports = class AddCreditCard{
     $('#member-card-list li').removeClass('selected-one-click-card');
   };
 
+  // input: credit card number (full or partial)
+  // output: credit card brand (or false for unknown)
+  detectCardType(number) {
+    let result = CreditCardType(number);
+    if(result.length != 1) return false;
+    let cc = result[0];
+    let brand = cc.type;
+    return brand;
+  }
+
   loadJQuery() {
+    var formService = new FormService();
+    formService.setCardNumber('#cardNumber');
     $('#back-to-member-card-list').on('click', () => {
       this.resetForm();
+      var CreditCardList = require("./credit-card-list");
       new CreditCardList().load();
-    });        
+    });
+    $('#cardNumber').on('keyup', (evt) => {
+      let elem = "#" + evt.target.id;
+      let val = $(elem).val();
+      let brand = this.detectCardType(val);
+      if( !brand ) {
+        $('#smls-card-icon').attr('class', 'cards');
+      } else {
+        $('#smls-card-icon').addClass(brand);
+      }
+    });
   };
 
 };
