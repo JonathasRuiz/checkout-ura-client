@@ -33,6 +33,12 @@ module.exports = class AddCreditCard {
     $('#member-card-list li').removeClass('selected-one-click-card');
   };
 
+  checkIsCardSmiles(cardNumber){
+    return ( cardNumber.indexOf('542661') === 0 || cardNumber.indexOf('545053') === 0
+          || cardNumber.indexOf('514895') === 0 || cardNumber.indexOf('510147') === 0
+          || cardNumber.indexOf('512427') === 0 || cardNumber.indexOf('514911') === 0 )
+  }
+
   // input: credit card number (full or partial)
   // output: credit card brand (or false for unknown)
   detectCardType(number) {
@@ -40,6 +46,9 @@ module.exports = class AddCreditCard {
     if(result.length != 1) return false;
     let cc = result[0];
     let brand = cc.type;
+    if(brand == "mastercard") {
+      brand = this.checkIsCardSmiles(number) ? "mastercard_smiles" : brand;
+    }
     return brand;
   }
 
@@ -55,9 +64,8 @@ module.exports = class AddCreditCard {
       let elem = "#" + evt.target.id;
       let val = $(elem).val();
       let brand = this.detectCardType(val);
-      if( !brand ) {
-        $('#smls-card-icon').attr('class', 'cards');
-      } else {
+      $('#smls-card-icon').attr('class', 'cards');
+      if( brand !== false ) {
         $('#smls-card-icon').addClass(brand);
       }
     });

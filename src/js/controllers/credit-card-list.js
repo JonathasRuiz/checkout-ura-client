@@ -3,8 +3,9 @@ var $ = require("jquery");
 var SmilesServer = require("../services/smiles-server");
 var HandlebarLoader = require("../services/handlebar-loader");
 
-var CreditCardListInstance = null;
+var Installments = require("./installments.js");
 
+var CreditCardListInstance = null;
 module.exports = class CreditCardList {
   constructor() {
     if(CreditCardListInstance) return CreditCardListInstance;
@@ -46,10 +47,15 @@ module.exports = class CreditCardList {
       .then(() => this.loadJQuery());
   };
 
+  selectCard(brand) {
+    new Installments().selectBrand(brand);
+  };
+
   loadJQuery() {
     $('input[name=member-card]').on('click', (evt) => {
       let elem = "#" + evt.target.id;
       let index = $(elem).data('index');
+      let brand = $(elem).data('brand');
       $('.div-secure-code-member-card').hide();
       $('#member-card-list li').removeClass('selected-one-click-card');
       $(elem).closest('li').addClass('selected-one-click-card');
@@ -58,6 +64,7 @@ module.exports = class CreditCardList {
         $('#div-secure-code-member-card-' + index).show();
       }
       $(elem).closest('li').addClass('selected-one-click-card');
+      this.selectCard(brand);
     });
 
     $("#other-credit-card").on('click', () => {
