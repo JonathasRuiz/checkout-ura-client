@@ -1,8 +1,11 @@
 <div class="select">
   <select id="installmentSelect">
-    <option value="1">{{value}} à vista</option>
-    {{#each installment}}
-      <option value="{{qtt}}">{{qtt}} Parcelas</option>
+    {{#each options}}
+      {{#if this.paycash}}
+        <option value="{{@key}}">R${{this.total}} à vista</option>
+      {{else}}
+        <option value="{{@key}}">{{this.quantity}} parcelas</option>
+      {{/if}}
     {{/each}}
   </select>
 </div>

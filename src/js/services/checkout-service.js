@@ -19,20 +19,24 @@ module.exports = class Installment {
       .then(() => { return this; })
   }
 
+  mapInstallmentOptions(o) {
+    o.paycash = o.quantity == 1;
+    return o;
+  };
   processCheckoutData(d) {
     this.data = d;
     this.processInstallments();
-  }
+  };
   processInstallments(){
     this.installments = [];
     let i = this.data.creditCardOptionList;
     i.forEach((cc) => {
-      this.installments[cc.brand] = cc.installmentOptionList;
+      this.installments[cc.brand] = cc.installmentOptionList.map(this.mapInstallmentOptions);
     });
-  }
+  };
 
   getInstallments() {
     return this.installments;
-  }
+  };
 
 };

@@ -8,6 +8,7 @@ module.exports = class Installments {
   constructor() {
     if(InstallmentInstance) return InstallmentInstance;
     this.hb = null;
+    this.handlebarLoader = new HandlebarLoader();
     this.creditCardList = [];
     this.installmentsOptions = {};
     InstallmentInstance = this;
@@ -23,20 +24,36 @@ module.exports = class Installments {
 
   load(){
     if(this.hb == null) {
-      this.hb = new HandlebarLoader()
+      this.hb = this.handlebarLoader
         .loadTemplate("sections/installments", {});
     }
-    this.hb.into("#checkout-step-2")
-      .then(() => this.loadJQuery());
+    this.hb.into("#checkout-step-2");
     this.loadInstallments();
   };
+  loadInstallmentsSelect() {
+    this.handlebarLoader
+      .loadTemplate("sections/installments-select", { options:this.installmentsOptions })
+      .into("#installmentSelectDiv")
+      .then(() => this.jQuerySelect());
+  };
+  loadInstallmentsTooltip() {
+    this.handlebarLoader
+      .loadTemplate("sections/installments-tooltip", { options:this.installmentsOptions })
+      .into("#entendaParc");
+  };
 
-  loadJQuery() {
+  jQuerySelect() {
+    $("#installmentSelect").on("change", (evt) => {
+      let value = evt.target.value;
+      console.info("selected: ", this.installmentsOptions[value]);
+    });
   };
 
   selectBrand(b) {
     let brand = String(b).toUpperCase();
     this.installmentsOptions = this.creditCardList[brand];
+    this.loadInstallmentsSelect();
+    console.info(this.installmentsOptions);
   };
 
 };

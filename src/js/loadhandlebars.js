@@ -13,8 +13,8 @@ $(document).ready(() => {
     .into("#checkout-token-portlet")
     .then(() => {
       // step 1:
-//      new CreditCardList().load();
-      new AddCreditCard().load();
+      new CreditCardList().load();
+//      new AddCreditCard().load();
 
       // step 2:
       new Installment().load();

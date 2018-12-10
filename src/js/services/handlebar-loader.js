@@ -22,13 +22,26 @@ class hbTemplate {
 
 };
 
-
+var HandlebarsInstance = null;
 module.exports = class HandlebarLoader {
-
   constructor() {
+    if(HandlebarsInstance) return HandlebarsInstance;
     this.templateLocal = "../src/templates/";
     this.templateName;
+    this.handlebars = Handlebars;
+    HandlebarsInstance = this;
   }
+
+/*
+  loadHandlebar() {
+    Handlebars.registerHelper('if_eq', (a, b, opts) => {
+      if(a == b)
+        return opts.fn(this);
+      else
+        return opts.inverse(this);
+    });
+  }
+*/
 
   getTemplateFile(name) {
     return this.templateLocal + name + ".hbs";
@@ -48,7 +61,7 @@ module.exports = class HandlebarLoader {
           if(xhttp.readyState == 4) {
             if (xhttp.status == 200) {
               console.info("loaded template: " + templateFile, data);
-              let templateScript = Handlebars.compile(xhttp.responseText);
+              let templateScript = this.handlebars.compile(xhttp.responseText);
               let html = templateScript(data);
               resolve(html);
             } else {
