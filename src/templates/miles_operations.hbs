@@ -1,0 +1,103 @@
+{{#compareList this '0' operator='=='}}
+    <div class="empty-list">
+        <div class="message">Não há itens para Checkout.</div>
+    </div>
+{{else}}
+   {{#each this}}
+        <tr>
+            {{#compare miles.operation "PURCHASE"}}
+                <td class="miles-operations__miles-purchase">
+                    <b>
+                        Compra de Milhas <br />
+                        {{miles.quantity}} milhas
+                    </b>
+                    <br />
+                    <span> R$ {{miles.unitCost}} /milhas </span>
+                </td>
+                {{setVariables this @index miles.operation}}
+            {{/compare}}
+            {{#compare miles.operation "REVALIDATION"}}
+                <td class="miles-operations__miles-reactivation">
+                    <b>
+                        Reativação de Milhas <br />
+                        {{miles.quantity}} milhas
+                    </b>
+                    <br />
+                    <span> R$ {{miles.unitCost}} /milhas </span>
+                </td>
+                {{setVariables this @index miles.operation}}
+            {{/compare}}
+            {{#compare miles.operation "TRANSFER"}}
+                <td class="miles-operations__miles-exchange">
+                    <b>
+                        Transferencia de Milhas <br />
+                        {{miles.quantity}} milhas
+                    </b>
+                    <br />
+                    <span> R$ {{miles.unitCost}} /milhas </span>
+                </td>
+                {{setVariables this @index  miles.operation}}
+            {{/compare}}
+            <td class="miles-operations__details">
+                <div class="miles-operations__details__miles-validity">
+                    <b>Validade das milhas</b> <br />
+                    {{formatDate miles.expiryDate}}
+                </div>
+            {{#compare miles.operation "TRANSFER"}}
+                <div class="miles-operations__details__miles-exchange-receiver">
+                    Transferencia para <br>
+                <b>
+                    {{simplifyName miles.receiver.name}}
+                    <br>({{miles.receiver.memberNumber}})
+                </b>
+                </div>
+            {{/compare}}
+            {{#compare miles.discount 0 operator="<="}}
+                {{#compare varPercentBonus 0 operator=">" }}
+                <div class="miles-operations__details__miles-voucher">
+                    <b class="brand-main">
+                    Promoção
+                    </b><br>
+                {{!-- + <fmt:formatNumber type="percent" value="${varPercentBonus}" />
+                <ui:message key="smiles.checkout.label.miles.bonus"/> --}}
+                + {{formatPercentage varPercentBonus}} milhas bonus
+                <br/>
+                <b>
+                    {{!-- <fmt:formatNumber type="number" value="${varTotalMilhas}" />  --}}
+                    {{varTotalMilhas}}
+                    {{!-- <ui:message key="label.miles.lowercase"/>  --}} milhas no total
+                    </b>
+
+                </div>
+                {{/compare}}
+            {{/compare}}
+            {{#compare miles.discount 0 operator=">"}}
+                <div class="miles-operations__details__miles-voucher">
+                    <b class="brand-main">
+                        {{!-- <ui:message key="checkout.voucher.code" /> --}}Código Voucher
+                    </b><br>
+                    ({{voucherNumber}})
+                    <p>Voucher Aplicado</p>
+                </div>                
+            {{/compare}}
+
+            </td>
+            <td class="miles-operations__item-total">
+            <span
+                class="smiles-icons ic-cancelar cancel-item-button"
+                title="Excluir item"
+                onclick="GetCheckoutController.removeItemCart('_smilesgetcheckoutportlet_WAR_smilescheckoutportlet_', '3928221' , 'https://portal-uat2.smiles.com.br/group/guest/checkout?p_p_id=smilesgetcheckoutportlet_WAR_smilescheckoutportlet&amp;p_p_lifecycle=2&amp;p_p_state=normal&amp;p_p_mode=view&amp;p_p_resource_id=removeFromCheckout&amp;p_p_cacheability=cacheLevelPage&amp;p_p_col_id=column-1&amp;p_p_col_count=1', 'true');"
+            >
+            </span>
+            R$ {{miles.subTotalCost}}
+            </td>
+        </tr>
+        {{!-- TODO
+            Fazer uma simulação de Compra de Bagagens para criar a linha na tabela de checkout
+        --}}
+
+    {{/each}}
+{{/compareList}}
+
+
+

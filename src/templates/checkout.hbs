@@ -906,13 +906,10 @@
                       </div>
                     </section>
                     <script type="text/javascript">
-                      Liferay.Portlet.ready(function(portletId, node) {
-                        if (
-                          portletId ===
-                          Liferay.Util.getPortletId(
-                            "_smilesgetcheckoutportlet_WAR_smilescheckoutportlet_"
-                          ).substring(1)
-                        ) {
+                      $( document ).ready(function() {
+
+/*
+
                           GetCheckoutController.msgPurchase = "Comprar milhas";
                           GetCheckoutController.msgTransfer =
                             "Transferir milhas";
@@ -3075,7 +3072,7 @@
                           if ("" == "easytravel") {
                             $("#smls-check-easy-travel").click();
                           }
-                        }
+                        
                         setTimeout(function() {
                           $(".cardCvc").removeAttr("disabled");
                           $("#cardNumber").removeAttr("disabled");
@@ -3083,6 +3080,7 @@
                           $("#clear").removeAttr("disabled");
                           $("#btnCheckout").removeAttr("disabled");
                         }, 2000);
+*/
                       });
                     </script>
                   </div>

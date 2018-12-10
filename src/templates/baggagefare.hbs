@@ -1,0 +1,75 @@
+
+              {{!-- <c:set var="total_money" value="0"></c:set>
+            <c:set var="total_miles" value="0"></c:set> --}}
+            {{#compareList this.itemList '0' operator='=='}}
+                <div class="empty-list">
+                    <div class="message">Não há itens para Checkout.</div>
+                </div>                
+            {{else}}
+                {{#each this.itemList}}  
+                        {{#if (and booking.baggage booking)}}
+                            {{#each booking.baggage.flightList}}
+                                {{#each passengerBaggageList}}
+                                    {{#if (and baggage (gt (convertToNumber baggage.cartQuantity) 0))}}
+                                        <tr>
+                                            <td>
+                                                {{passenger.firstName}}    
+                                                {{baggage.cartQuantity}}
+                                                {{#compare (convertToNumber this.baggage.cartQuantity) 1 operator='>'}}
+                                                    {{!-- <ui:message key="label.purchase.baggages.lower" /> --}}
+                                                    bagagens de
+                                                    {{else}}
+                                                    {{!-- <ui:message key="label.purchase.baggage.lower" /> --}}
+                                                    bagagem de
+                                                {{/compare}}
+                                                {{!-- <fmt:formatNumber type="number" maxFractionDigits="0" value="${passengerBaggage.baggage.weight}" />kg --}}
+                                                {{this.baggage.weight}}kg
+                                            </td>
+                                            <td>
+                                                {{#compare (convertToNumber this.miles) 0 operator='>'}}
+                                                    {{!-- <fmt:formatNumber type="number" maxFractionDigits="3" value="${passengerBaggage.miles}" /> --}}
+                                                    {{this.miles}}
+                                                {{/compare}}
+                                            </td>
+                                            <td>
+                                                {{#compare (convertToNumber this.money) 0 operator='>'}}
+                                                    {{!-- <fmt:formatNumber value="${passengerBaggage.money}" currencySymbol="R$" type="currency" /> --}}
+                                                    {{this.money}}
+                                                {{/compare}}
+                                            </td>                                            
+                                        </tr>
+                                    {{/if}}
+                                {{/each}}
+                            {{/each}}
+                        {{/if}}
+                    {{/each}}
+        
+                <tr>
+                     <td>
+                         <b>
+                             {{!-- <ui:message key="label.total.uppercase" /> --}}
+                             TOTAL
+                        </b>
+                    </td>
+                    <td>
+                        {{#compare totals.total.miles 0 operator='>'}}
+                            <span class="type-value">
+                                {{!-- <ui:message key="label.miles" /> --}}
+                                Milhas
+                            </span>
+                            {{!-- <fmt:formatNumber type="number" maxFractionDigits="3" value="${getCheckout.total.miles}" /> --}}
+                            {{totals.total.miles}}
+                        {{/compare}}
+                    </td>
+                    <td>
+                        {{#compare totals.total.money 0 operator='>'}}
+                                <span class="type-value">
+                                    {{!-- <ui:message key="label.monetary.code" /> --}}
+                                    R$
+                                </span>
+                                {{!-- <fmt:formatNumber value="${getCheckout.total.money}" type="currency" /> --}}
+                                {{totals.total.money}}
+                        {{/compare}}
+                    </td>                    
+                </tr>
+            {{/compareList}}

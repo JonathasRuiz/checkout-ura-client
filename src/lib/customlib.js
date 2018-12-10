@@ -1,0 +1,1 @@
+var smiles={portal:{CommomValidators:{controller:{makeFieldInvalid:function(e){e instanceof jQuery?e.addClass("invalid"):t(e).addClass("invalid")},makeFieldValid:function(e){e instanceof jQuery?e.removeClass("invalid"):t(e).removeClass("invalid")}}}}}

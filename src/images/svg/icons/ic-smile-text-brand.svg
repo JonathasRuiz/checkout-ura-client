@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="" x="0px" y="0px" width="27.25px" height="8.368px" viewBox="0 0 27.25 8.368" enable-background="new 0 0 27.25 8.368" xml:space="preserve" class="svg icon-smiles-branco replaced-svg">
+<g>
+	<defs>
+		<rect id="SVGID_1_" width="335.036" height="37.118"></rect>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_" overflow="visible"></use>
+	</clipPath>
+	<path clip-path="url(#SVGID_2_)" fill="#FF5A00" d="M22.134,3.701c-1.979,0.971-4.73,1.851-8.208,1.851   c-3.511,0-7.733-1.312-11.163-3.717C2.495,1.647,2.318,1.458,2.188,1.337c-0.062-0.06-0.11-0.107-0.142-0.14   C2.014,1.166,1.998,1.15,1.998,1.15C1.98,1.132,1.954,1.124,1.928,1.132C1.904,1.14,1.886,1.16,1.882,1.186   C1.868,1.28,1.86,1.397,1.86,1.536v0.031v0.011c0.006,0.355,0.128,0.629,0.458,0.93c0.079,0.076,4.505,4.495,11.608,4.495   c7.104,0,11.53-4.419,11.609-4.495c0.328-0.301,0.452-0.574,0.458-0.93V1.567V1.536c0-0.139-0.01-0.256-0.022-0.35   C24.595,2.39,22.134,3.701,22.134,3.701"></path>
+</g>
+</svg>
