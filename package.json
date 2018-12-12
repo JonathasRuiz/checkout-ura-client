@@ -4,7 +4,9 @@
   "description": "Front Checkout URA",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev-deprecated": "watchify -x jquery src/js/main.js -v -o bundle.js | http-server",
+    "dev": "gulp dev-run",
+    "test": "mocha src/**/*.spec.js"
   },
   "keywords": [
     "Checkout-URA",
@@ -13,7 +15,38 @@
   "author": "Jonathas Ruiz dos Santos",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-sass": "^4.0.2"
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.1.6",
+    "babel-minify": "^0.5.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^16.2.3",
+    "browserify-shim": "^3.8.14",
+    "chai": "^4.2.0",
+    "gulp": "^4.0.0",
+    "gulp-run": "^1.7.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "gulp-util": "^3.0.8",
+    "http-server": "^0.11.1",
+    "mocha": "^5.2.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.0"
+  },
+  "dependencies": {
+    "credit-card-type": "^8.0.0",
+    "jquery": "^3.3.1"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "jquery": "global:$",
+    "../libs": "global:window"
   }
 }

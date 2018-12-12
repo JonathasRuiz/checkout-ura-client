@@ -22,40 +22,38 @@ Handlebars.registerHelper ("leqt", function(arg1,arg2) {
   return (arg1 <= arg2 ?true:false);
   });
 
+Handlebars.registerHelper ("simplifyName", function(receiver) {
+  var arrayReceiver = receiver.split(' ');
+  var newName = '';
+  console.log(arrayReceiver.length);
+  for(i=0;i<arrayReceiver.length;i++){
+      console.log(i)
+      if(i==0){
+          newName+=arrayReceiver[0]+" ";
+      }else if(i>=arrayReceiver.length-1){
+          newName+=arrayReceiver[arrayReceiver.length-1];
+      }else{
+          newName+=arrayReceiver[i].substr(0,1)+". "
+      }
+  }
+  return newName;
+})
 
+Handlebars.registerHelper ("formatDate", function(arg) {
+  var date = new Date(arg);
+  var day = date.getDate()+1;
+  var month = date.getMonth()+1;
+  var year = date.getFullYear();
   
-  Handlebars.registerHelper ("simplifyName", function(receiver) {
-    var arrayReceiver = receiver.split(' ');
-    var newName = '';
-    console.log(arrayReceiver.length);
-    for(i=0;i<arrayReceiver.length;i++){
-        console.log(i)
-        if(i==0){
-            newName+=arrayReceiver[0]+" ";
-        }else if(i>=arrayReceiver.length-1){
-            newName+=arrayReceiver[arrayReceiver.length-1];
-        }else{
-            newName+=arrayReceiver[i].substr(0,1)+". "
-        }
-    }
-    return newName;
-  })
+  let StrDate =  [
+    (day>9 ? '' : '0') + day,
+    (month>9 ? '' : '0') + month,
+    year
+   ].join('/');
 
-  Handlebars.registerHelper ("formatDate", function(arg) {
-    var date = new Date(arg);
-    var day = date.getDate()+1;
-    var month = date.getMonth()+1;
-    var year = date.getFullYear();
-    
-    let StrDate =  [
-      (day>9 ? '' : '0') + day,
-      (month>9 ? '' : '0') + month,
-      year
-     ].join('/');
-
-     return StrDate;
-    
-  });
+   return StrDate;
+  
+});
 
 
 
