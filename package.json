@@ -4,7 +4,7 @@
   "description": "Front Checkout URA",
   "main": "index.js",
   "scripts": {
-    "dev-deprecated": "watchify -x jquery src/js/main.js -v -o bundle.js | http-server",
+    "build": "gulp build",
     "dev": "gulp dev-run",
     "test": "mocha src/**/*.spec.js"
   },

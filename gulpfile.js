@@ -20,7 +20,7 @@ var run = (command) => {
 };
 
 var compileStyles = () => {
-  gulp.src("./src/sass/*.scss")
+  return gulp.src("./src/sass/*.scss")
     .pipe(sass().on("error", sass.logError))
     .pipe(gulp.dest("./src/css/"));
 };
@@ -85,14 +85,10 @@ var runServer = () => {
 };
 
 
-
 gulp.task("styles", gulp.series(compileStyles) );
-gulp.task("scripts", gulp.series(compileJs));
+gulp.task("scripts", gulp.series(compileJs) );
+gulp.task("build", gulp.series(buildJs, compileStyles));
+gulp.task("dev-run", gulp.series(turnOnWatcher, compileJs, compileStyles, runServer));
 
-gulp.task("build-dev", gulp.series(compileJs, compileStyles));
-gulp.task("build", gulp.series(buildJs));
-gulp.task("dev", gulp.series(turnOnWatcher, compileJs, compileStyles));
-gulp.task("dev-run", gulp.series(turnOnWatcher, compileJs, runServer));
-
-gulp.task("default", gulp.series("dev"));
+gulp.task("default", gulp.series("dev-run"));
 

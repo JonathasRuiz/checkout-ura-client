@@ -69,8 +69,8 @@ module.exports = class CreditCardList {
     });
 
     $("#other-credit-card").on('click', () => {
-//      var AddCreditCard = require("./add-credit-card");
-//      new AddCreditCard().load()
+      var AddCreditCard = require("./credit-card-form");
+      new AddCreditCard().load()
     });
   };
 
