@@ -58,6 +58,7 @@ Handlebars.registerHelper ("replace", function(string,arg1,arg2) {
     }
 });
 Handlebars.registerHelper ("formatNumber", function(arg1,arg2) {
+  console.info("formatting ", arg1);
     if(arg1 != undefined && arg1 != '') {
         return Math.max(0, arg1).toFixed(0).replace(/(?=(?:\d{3})+$)(?!^)/g, '.');
     }else{
@@ -175,4 +176,12 @@ Handlebars.registerHelper('getYearFromDateTime', function(variable) {
     else return null;
 });
 
+Handlebars.registerHelper('reais', function(amount, options) {
+  if (typeof(amount) === 'string') { amount = options.contexts[0].get(amount); }
+  var rounded = Math.round(amount * 100);
+  var dec = rounded % 100;
+  var whole = rounded / 100 - dec / 100;
+  var decStr = '' + dec;
+  return 'R$ ' + whole + ',' + decStr + ( decStr.length < 2 ? '0' : '');
+});
 

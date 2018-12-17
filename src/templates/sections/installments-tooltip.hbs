@@ -1,0 +1,57 @@
+<div class="smls-column smls-column-11 mobile-center-parcel">
+  <div id="entendaParc" class="text-center see-installments-table">
+    Entenda as parcelas
+    <span class="smiles-icons arrow-down" ></span>
+    <div class="tooltip-installments">
+      <!-- TOOLTIP ENTENDA AS PARCELAS -->
+      <div class="understand-installments">
+        <h4 class="theme-dark">
+          Cada item possui um tipo de parcelamento
+        </h4>
+        <p>
+          Confira abaixo o valor detalhado de cada parcela. Cada produto será cobrado separadamente.
+        </p>
+        <table id="installments-table" class="smiles-table">
+          <tbody>
+            <tr>
+              <th>Item</th>
+              {{#if data.paycash}}
+                <th>à vista</th>
+              {{else}}
+                <th>{{data.quantity}} x</th>
+              {{/if}}
+            </tr>
+            {{#each data.installmentList}}
+              <tr>
+                <td>
+                  Comprar milhas&nbsp;<span class="color999">(até&nbsp;{{../data.quantity}} x)</span>
+                </td>
+                <td class="installment-1">
+                  {{reais this}}
+                </td>
+              </tr>
+            {{/each}}
+            <tr>
+              <td><p>Total</p></td>
+              <td class="installment-1">
+                {{reais data.total}}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="understand-installments__pager">
+              <td id="previous-installment" class="text-center">
+                <span class="smiles-icons seta-esq-paginacao"></span>
+                Voltar parcela
+              </td>
+              <td id="next-installment" class="text-center">
+                Avançar parcela
+                <span class="smiles-icons seta-dir-paginacao"></span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

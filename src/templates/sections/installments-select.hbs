@@ -1,0 +1,11 @@
+<div class="select">
+  <select id="installmentSelect">
+    {{#each options}}
+      {{#if this.paycash}}
+        <option value="{{@key}}">{{reais this.total}} à vista</option>
+      {{else}}
+        <option value="{{@key}}">{{this.quantity}} parcelas</option>
+      {{/if}}
+    {{/each}}
+  </select>
+</div>

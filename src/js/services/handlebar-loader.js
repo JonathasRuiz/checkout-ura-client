@@ -53,6 +53,13 @@ module.exports = class HandlebarLoader {
               let templateScript = this.handlebars.compile(xhttp.responseText);
               let html = templateScript(data);
               resolve(html);
+            } else if(xhttp.status == 404) {
+              let msg404 = "TEMPLATE ["+templateFile+"] NÃO ENCONTRADO!";
+              console.info(msg404);
+              reject({
+                code: "404",
+                message: msg404
+              });
             } else {
               console.info(xhttp);
               reject({

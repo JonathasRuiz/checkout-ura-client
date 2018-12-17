@@ -1,0 +1,13 @@
+<div>
+  <div class="smls-drop-list">
+    <ul class="" id="installmentDescripition" style="margin-top: 0px;">
+      {{#if data.paycash}}
+        <li><p>à vista {{reais data.total}}</p></li>
+      {{else}}
+        {{#each data.installmentList}}
+          <li><p>Parcela {{@key}}: {{reais this}}</p></li>
+        {{/each}}
+      {{/if}}
+    </ul>
+  </div>
+</div>

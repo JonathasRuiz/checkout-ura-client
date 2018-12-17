@@ -463,6 +463,51 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
 
+var HandlebarLoader = require("../services/handlebar-loader");
+
+var ConfirmInstance = null;
+module.exports = function () {
+  function Confirm() {
+    _classCallCheck(this, Confirm);
+
+    if (ConfirmInstance) return ConfirmInstance;
+    this.hb = null;
+    this.handlebarLoader = new HandlebarLoader();
+    ConfirmInstance = this;
+  }
+
+  _createClass(Confirm, [{
+    key: "load",
+    value: function load() {
+      var _this = this;
+
+      if (this.hb == null) {
+        this.hb = this.handlebarLoader.loadTemplate("sections/confirm", {});
+      }
+      this.hb.into("#checkout-step-3").then(function () {
+        return _this.loadJQuery();
+      });
+    }
+  }, {
+    key: "loadJQuery",
+    value: function loadJQuery() {}
+  }]);
+
+  return Confirm;
+}();
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"../services/handlebar-loader":10}],3:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
 var CreditCardType = require('credit-card-type');
 
 var FormService = require("../services/form-service.js");
@@ -552,7 +597,7 @@ module.exports = function () {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../services/form-service.js":6,"../services/handlebar-loader":7,"../services/smiles-server":8,"./credit-card-list":3,"credit-card-type":1}],3:[function(require,module,exports){
+},{"../services/form-service.js":9,"../services/handlebar-loader":10,"../services/smiles-server":11,"./credit-card-list":4,"credit-card-type":1}],4:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -565,7 +610,7 @@ var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefi
 var SmilesServer = require("../services/smiles-server");
 var HandlebarLoader = require("../services/handlebar-loader");
 
-//var Installments = require("./installments.js");
+var Installments = require("./installments.js");
 
 var CreditCardListInstance = null;
 module.exports = function () {
@@ -627,8 +672,7 @@ module.exports = function () {
   }, {
     key: "selectCard",
     value: function selectCard(brand) {
-      console.info("selected: ", brand);
-      //    new Installments().selectBrand(brand);
+      new Installments().selectBrand(brand);
     }
   }, {
     key: "loadJQuery",
@@ -662,16 +706,123 @@ module.exports = function () {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../services/handlebar-loader":7,"../services/smiles-server":8,"./credit-card-form":2}],4:[function(require,module,exports){
+},{"../services/handlebar-loader":10,"../services/smiles-server":11,"./credit-card-form":3,"./installments.js":5}],5:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
+var HandlebarLoader = require("../services/handlebar-loader");
+var CheckoutService = require("../services/checkout-service");
+
+var InstallmentInstance = null;
+module.exports = function () {
+  function Installments() {
+    _classCallCheck(this, Installments);
+
+    if (InstallmentInstance) return InstallmentInstance;
+    this.hb = null;
+    this.handlebarLoader = new HandlebarLoader();
+    this.creditCardList = [];
+    this.installmentsOptions = {};
+    InstallmentInstance = this;
+  }
+
+  _createClass(Installments, [{
+    key: "loadInstallments",
+    value: function loadInstallments() {
+      var _this = this;
+
+      return new CheckoutService().load().then(function (service) {
+        _this.creditCardList = service.getInstallments();
+      });
+    }
+  }, {
+    key: "load",
+    value: function load() {
+      if (this.hb == null) {
+        this.hb = this.handlebarLoader.loadTemplate("sections/installments", {});
+      }
+      this.hb.into("#checkout-step-2");
+      return this.loadInstallments();
+    }
+  }, {
+    key: "loadInstallmentsSelect",
+    value: function loadInstallmentsSelect() {
+      var _this2 = this;
+
+      return this.handlebarLoader.loadTemplate("sections/installments-select", { options: this.installmentsOptions }).into("#installmentSelectDiv").then(function () {
+        return _this2.jQuerySelect();
+      }).then(function () {
+        return _this2.selectInstallmentOption(0);
+      });
+    }
+  }, {
+    key: "loadInstallmentsDescription",
+    value: function loadInstallmentsDescription(options) {
+      return this.handlebarLoader.loadTemplate("sections/installments-description", { data: options }).into("#installmentDescriptionDiv");
+    }
+  }, {
+    key: "loadInstallmentsTooltip",
+    value: function loadInstallmentsTooltip(options) {
+      var _this3 = this;
+
+      this.handlebarLoader.loadTemplate("sections/installments-tooltip", { data: options }).into("#installmentTooltipDiv").then(function () {
+        return _this3.jQueryTooltip();
+      });
+    }
+  }, {
+    key: "selectInstallmentOption",
+    value: function selectInstallmentOption(key) {
+      var options = this.installmentsOptions[key];
+      console.info("selected: ", options);
+      this.loadInstallmentsDescription(options);
+      this.loadInstallmentsTooltip(options);
+    }
+  }, {
+    key: "jQuerySelect",
+    value: function jQuerySelect() {
+      var _this4 = this;
+
+      $("#installmentSelect").on("change", function (evt) {
+        var value = evt.target.value;
+        _this4.selectInstallmentOption(value);
+      });
+    }
+  }, {
+    key: "jQueryTooltip",
+    value: function jQueryTooltip() {
+      $("#entendaParc").on("click", function () {
+        $(".understand-installments").toggle();
+      });
+    }
+  }, {
+    key: "selectBrand",
+    value: function selectBrand(b) {
+      var brand = String(b).toUpperCase();
+      this.installmentsOptions = this.creditCardList[brand];
+      this.loadInstallmentsSelect();
+    }
+  }]);
+
+  return Installments;
+}();
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"../services/checkout-service":8,"../services/handlebar-loader":10}],6:[function(require,module,exports){
 "use strict";
 
 var HandlebarLoader = require("./services/handlebar-loader");
 
 var CreditCardList = require("./controllers/credit-card-list");
-/*
-var AddCreditCard = require("./controllers/add-credit-card");
+var AddCreditCard = require("./controllers/credit-card-form");
 var Installment = require("./controllers/installments");
-*/
+var Confirm = require("./controllers/confirm");
 
 $(document).ready(function () {
   var loader = new HandlebarLoader();
@@ -679,16 +830,89 @@ $(document).ready(function () {
     // step 1:
     new CreditCardList().load();
     // step 2:
-    //      new Installment().load();
+    new Installment().load();
+    // step 3:
+    new Confirm().load();
   });
 });
 
-},{"./controllers/credit-card-list":3,"./services/handlebar-loader":7}],5:[function(require,module,exports){
+},{"./controllers/confirm":2,"./controllers/credit-card-form":3,"./controllers/credit-card-list":4,"./controllers/installments":5,"./services/handlebar-loader":10}],7:[function(require,module,exports){
 "use strict";
 
 require("./load.js");
 
-},{"./load.js":4}],6:[function(require,module,exports){
+},{"./load.js":6}],8:[function(require,module,exports){
+(function (global){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var $ = (typeof window !== "undefined" ? window['$'] : typeof global !== "undefined" ? global['$'] : null);
+
+var SmilesServer = require("./smiles-server");
+
+var CheckoutServiceInstance = null;
+
+module.exports = function () {
+  function Installment() {
+    _classCallCheck(this, Installment);
+
+    if (CheckoutServiceInstance) return CheckoutServiceInstance;
+    this.data = null;
+    this.installments = [];
+    CheckoutServiceInstance = this;
+  }
+
+  _createClass(Installment, [{
+    key: "load",
+    value: function load() {
+      var _this = this;
+
+      var server = new SmilesServer();
+      return server.getCheckout().then(function (data) {
+        return _this.processCheckoutData(data);
+      }).then(function () {
+        return _this;
+      });
+    }
+  }, {
+    key: "mapInstallmentOptions",
+    value: function mapInstallmentOptions(o) {
+      o.paycash = o.quantity == 1;
+      return o;
+    }
+  }, {
+    key: "processCheckoutData",
+    value: function processCheckoutData(d) {
+      this.data = d;
+      this.processInstallments();
+    }
+  }, {
+    key: "processInstallments",
+    value: function processInstallments() {
+      var _this2 = this;
+
+      this.installments = [];
+      var i = this.data.creditCardOptionList;
+      i.forEach(function (cc) {
+        _this2.installments[cc.brand] = cc.installmentOptionList.map(_this2.mapInstallmentOptions);
+      });
+    }
+  }, {
+    key: "getInstallments",
+    value: function getInstallments() {
+      return this.installments;
+    }
+  }]);
+
+  return Installment;
+}();
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{"./smiles-server":11}],9:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -755,7 +979,7 @@ module.exports = function () {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -845,6 +1069,13 @@ module.exports = function () {
               var templateScript = _this.handlebars.compile(xhttp.responseText);
               var html = templateScript(data);
               resolve(html);
+            } else if (xhttp.status == 404) {
+              var msg404 = "TEMPLATE [" + templateFile + "] NÃO ENCONTRADO!";
+              console.info(msg404);
+              reject({
+                code: "404",
+                message: msg404
+              });
             } else {
               console.info(xhttp);
               reject({
@@ -866,7 +1097,7 @@ module.exports = function () {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -959,7 +1190,7 @@ module.exports = function () {
   }, {
     key: "getCheckout",
     value: function getCheckout() {
-      var url = this.host + "/api/checkout";
+      var url = this.host + "/api/checkout?type=PURCHASE2";
       return this.get(url);
     }
   }, {
@@ -997,6 +1228,6 @@ module.exports = function () {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[5])
+},{}]},{},[7])
 
 //# sourceMappingURL=bundle.js.map

@@ -59,7 +59,7 @@ module.exports = class SmilesServer {
     return defer;
   };
   getCheckout() {
-    let url = this.host + "/api/checkout";
+    let url = this.host + "/api/checkout?type=PURCHASE2";
     return this.get(url);
   };
   getUserInfo() {

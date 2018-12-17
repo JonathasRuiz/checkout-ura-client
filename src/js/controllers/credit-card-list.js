@@ -3,7 +3,7 @@ var $ = require("jquery");
 var SmilesServer = require("../services/smiles-server");
 var HandlebarLoader = require("../services/handlebar-loader");
 
-//var Installments = require("./installments.js");
+var Installments = require("./installments.js");
 
 var CreditCardListInstance = null;
 module.exports = class CreditCardList {
@@ -48,8 +48,7 @@ module.exports = class CreditCardList {
   };
 
   selectCard(brand) {
-    console.info("selected: ", brand);
-//    new Installments().selectBrand(brand);
+    new Installments().selectBrand(brand);
   };
 
   loadJQuery() {
