@@ -76,6 +76,7 @@ var buildJs = () => {
   return bundle.bundle()
     .pipe(source("bundle.js"))
     .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest("./"));
 };
 
